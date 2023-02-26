@@ -2,16 +2,18 @@ const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
 const mongoose = require("mongoose");
+const courseLib = require("./backend/lib/courseLib");
 
 const app = express();
 const str = process.env.MONGO_CONNECTION_STRING;
 mongoose.set('strictQuery', true);
-mongoose.connect(str, function(err){
+mongoose.connect(str,async function(err){
     if(err)
         console.error(err);
     else{
         console.log("DB CONNECTED");
-        
+        const course = await courseLib.createFirstCourse();
+        console.log(course);
         app.listen(3000, function(){
             console.log("SERVER running in http://localhost:3000")
         })
